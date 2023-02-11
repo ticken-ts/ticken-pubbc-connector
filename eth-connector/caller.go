@@ -1,12 +1,12 @@
-package ethereum
+package eth_connector
 
 import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	chainmodels "github.com/ticken-ts/ticken-pubbc-connector/chain-models"
-	"github.com/ticken-ts/ticken-pubbc-connector/ethereum/node"
-	"github.com/ticken-ts/ticken-pubbc-connector/ethereum/scclient"
+	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/node"
+	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/scclient"
 )
 
 type Caller struct {
@@ -38,8 +38,8 @@ func (cc *Caller) MintTicket(buyerAddr string, section string) (string, error) {
 	return cc.submiter.SubmitTx("safeMint", common.HexToAddress(buyerAddr), section)
 }
 
-func (cc *Caller) GetTickets(buyerAddr string, section string) ([]chainmodels.Ticket, error) {
-	res, err := cc.querier.Query("getTicketsByOwner", common.HexToAddress(buyerAddr), section)
+func (cc *Caller) GetTickets(userAddr string) ([]chainmodels.Ticket, error) {
+	res, err := cc.querier.Query("getTicketsByOwner", common.HexToAddress(userAddr))
 	if err != nil {
 		return nil, err
 	}

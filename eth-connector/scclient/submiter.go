@@ -2,7 +2,7 @@ package scclient
 
 import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ticken-ts/ticken-pubbc-connector/ethereum/node"
+	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/node"
 )
 
 type Submiter struct {

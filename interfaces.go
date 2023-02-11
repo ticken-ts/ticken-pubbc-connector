@@ -25,5 +25,5 @@ type Caller interface {
 	MintTicket(buyerAddr string, section string) (string, error)
 
 	// GetTickets returns all tickets owned by the given user
-	GetTickets(buyerAddr string, section string) ([]chainmodels.Ticket, error)
+	GetTickets(userAddr string) ([]chainmodels.Ticket, error)
 }

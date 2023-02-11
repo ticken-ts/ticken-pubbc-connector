@@ -1,11 +1,11 @@
-package ethereum
+package eth_connector
 
 import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ticken-ts/ticken-pubbc-connector/ethereum/node"
-	"github.com/ticken-ts/ticken-pubbc-connector/ethereum/scclient"
-	"github.com/ticken-ts/ticken-pubbc-connector/ethereum/wallet"
+	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/node"
+	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/scclient"
+	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/wallet"
 )
 
 type Admin struct {
