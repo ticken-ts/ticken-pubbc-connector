@@ -7,26 +7,26 @@ import (
 
 type Submiter struct {
 	nc         *node.Connector
-	sc         *bind.BoundContract
 	transactor *bind.TransactOpts
+	scMetadata *bind.MetaData
 }
 
-func NewSubmiter(nc *node.Connector, identity string, scAddr string, scMetadata *bind.MetaData) (*Submiter, error) {
-	sc, err := nc.GetContract(scAddr, scMetadata)
-	if err != nil {
-		return nil, err
-	}
-
+func NewSubmiter(nc *node.Connector, identity string, scMetadata *bind.MetaData) (*Submiter, error) {
 	transactor, err := nc.GetTransactor(identity)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Submiter{nc: nc, sc: sc, transactor: transactor}, nil
+	return &Submiter{nc: nc, scMetadata: scMetadata, transactor: transactor}, nil
 }
 
-func (submiter *Submiter) SubmitTx(method string, params ...interface{}) (string, error) {
-	tx, err := submiter.sc.Transact(submiter.transactor, method, params)
+func (submiter *Submiter) SubmitTx(scAddr string, method string, params ...interface{}) (string, error) {
+	sc, err := submiter.nc.GetContract(scAddr, submiter.scMetadata)
+	if err != nil {
+		return "", err
+	}
+
+	tx, err := sc.Transact(submiter.transactor, method, params)
 	if err != nil {
 		return "", err
 	}

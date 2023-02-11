@@ -16,17 +16,17 @@ type Caller struct {
 	nc node.Connector
 }
 
-func NewCaller(nc *node.Connector, scAddr string, identity string) (*Caller, error) {
+func NewCaller(nc *node.Connector, identity string) (*Caller, error) {
 	if !nc.IsConnected() {
 		return nil, fmt.Errorf("node connector is not connected")
 	}
 
-	submiter, err := scclient.NewSubmiter(nc, identity, scAddr, nil)
+	submiter, err := scclient.NewSubmiter(nc, identity, scEventMetadata)
 	if err != nil {
 		return nil, err
 	}
 
-	querier, err := scclient.NewQuerier(nc, scAddr, nil)
+	querier, err := scclient.NewQuerier(nc, scEventMetadata)
 	if err != nil {
 		return nil, err
 	}
@@ -34,12 +34,12 @@ func NewCaller(nc *node.Connector, scAddr string, identity string) (*Caller, err
 	return &Caller{submiter: submiter, querier: querier}, nil
 }
 
-func (cc *Caller) MintTicket(buyerAddr string, section string) (string, error) {
-	return cc.submiter.SubmitTx("safeMint", common.HexToAddress(buyerAddr), section)
+func (cc *Caller) MintTicket(scAddr string, buyerAddr string, section string) (string, error) {
+	return cc.submiter.SubmitTx(scAddr, "safeMint", common.HexToAddress(buyerAddr), section)
 }
 
-func (cc *Caller) GetTickets(userAddr string) ([]chainmodels.Ticket, error) {
-	res, err := cc.querier.Query("getTicketsByOwner", common.HexToAddress(userAddr))
+func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]chainmodels.Ticket, error) {
+	res, err := cc.querier.Query(scAddr, "getTicketsByOwner", common.HexToAddress(userAddr))
 	if err != nil {
 		return nil, err
 	}

@@ -6,21 +6,21 @@ import (
 )
 
 type Querier struct {
-	nc *node.Connector
-	sc *bind.BoundContract
+	nc         *node.Connector
+	scMetadata *bind.MetaData
 }
 
-func NewQuerier(nc *node.Connector, scAddr string, scMetadata *bind.MetaData) (*Querier, error) {
-	sc, err := nc.GetContract(scAddr, scMetadata)
+func NewQuerier(nc *node.Connector, scMetadata *bind.MetaData) (*Querier, error) {
+	return &Querier{nc: nc, scMetadata: scMetadata}, nil
+}
+
+func (querier *Querier) Query(scAddr string, method string, params ...interface{}) ([]interface{}, error) {
+	sc, err := querier.nc.GetContract(scAddr, querier.scMetadata)
 	if err != nil {
 		return nil, err
 	}
-	return &Querier{nc: nc, sc: sc}, nil
-}
-
-func (querier *Querier) Query(method string, params ...interface{}) ([]interface{}, error) {
 	var out []interface{}
-	if err := querier.sc.Call(nil, &out, method, params); err != nil {
+	if err := sc.Call(nil, &out, method, params); err != nil {
 		return nil, err
 	}
 	return out, nil
