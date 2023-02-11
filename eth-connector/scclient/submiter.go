@@ -26,7 +26,7 @@ func (submiter *Submiter) SubmitTx(scAddr string, method string, params ...inter
 		return "", err
 	}
 
-	tx, err := sc.Transact(submiter.transactor, method, params)
+	tx, err := sc.Transact(submiter.transactor, method, params...)
 	if err != nil {
 		return "", err
 	}

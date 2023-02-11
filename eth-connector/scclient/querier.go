@@ -20,7 +20,7 @@ func (querier *Querier) Query(scAddr string, method string, params ...interface{
 		return nil, err
 	}
 	var out []interface{}
-	if err := sc.Call(nil, &out, method, params); err != nil {
+	if err := sc.Call(nil, &out, method, params...); err != nil {
 		return nil, err
 	}
 	return out, nil
