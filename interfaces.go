@@ -22,8 +22,8 @@ type Caller interface {
 	// MintTicket is a blocking function that generates a ticket
 	// in the public blockchain and assign the buyer as owner
 	// It returns the transaction ID that generated the ticket
-	MintTicket(buyerAddr string, section string) (string, error)
+	MintTicket(scAddr string, buyerAddr string, section string) (string, error)
 
 	// GetTickets returns all tickets owned by the given user
-	GetTickets(userAddr string) ([]chainmodels.Ticket, error)
+	GetTickets(scAddr string, userAddr string) ([]chainmodels.Ticket, error)
 }
