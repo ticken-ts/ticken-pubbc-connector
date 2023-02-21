@@ -48,3 +48,14 @@ func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]chainmodels.Tick
 
 	return tickets, err
 }
+
+func (cc *Caller) GetTicket(scAddr string, tokenID int) (*chainmodels.Ticket, error) {
+	res, err := cc.querier.Query(scAddr, "getTicket", tokenID)
+	if err != nil {
+		return nil, err
+	}
+
+	ticket := abi.ConvertType(res[0], new(chainmodels.Ticket)).(*chainmodels.Ticket)
+
+	return ticket, err
+}
