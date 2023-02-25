@@ -7,6 +7,7 @@ import (
 	chainmodels "github.com/ticken-ts/ticken-pubbc-connector/chain-models"
 	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/node"
 	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/scclient"
+	"math/big"
 )
 
 type Caller struct {
@@ -34,8 +35,8 @@ func NewCaller(nc *node.Connector, identity string) (*Caller, error) {
 	return &Caller{submiter: submiter, querier: querier}, nil
 }
 
-func (cc *Caller) MintTicket(scAddr string, buyerAddr string, section string) (string, error) {
-	return cc.submiter.SubmitTx(scAddr, "safeMint", common.HexToAddress(buyerAddr), section)
+func (cc *Caller) MintTicket(scAddr string, buyerAddr string, section string, tokenID *big.Int) (string, error) {
+	return cc.submiter.SubmitTx(scAddr, "safeMint", common.HexToAddress(buyerAddr), section, tokenID)
 }
 
 func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]chainmodels.Ticket, error) {
