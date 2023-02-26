@@ -1,6 +1,9 @@
 package ticken_pubbc_connector
 
-import chainmodels "github.com/ticken-ts/ticken-pubbc-connector/chain-models"
+import (
+	chainmodels "github.com/ticken-ts/ticken-pubbc-connector/chain-models"
+	"math/big"
+)
 
 type NodeConnector interface {
 	Connect() error
@@ -22,12 +25,12 @@ type Caller interface {
 	// MintTicket is a blocking function that generates a ticket
 	// in the public blockchain and assign the buyer as owner
 	// It returns the transaction ID that generated the ticket
-	MintTicket(scAddr string, buyerAddr string, section string) (string, error)
+	MintTicket(scAddr string, buyerAddr string, section string, tokenID *big.Int) (string, error)
 
 	// GetTickets returns all tickets owned by the given user
 	GetTickets(scAddr string, userAddr string) ([]chainmodels.Ticket, error)
 
 	// GetTicket return the ticket that match the ticket ID that was minted
 	// in the contract with address scAddr
-	GetTicket(scAddr string, tokenID int) (chainmodels.Ticket, error)
+	GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticket, error)
 }
