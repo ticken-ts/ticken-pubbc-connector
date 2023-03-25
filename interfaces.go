@@ -33,4 +33,9 @@ type Caller interface {
 	// GetTicket return the ticket that match the ticket ID that was minted
 	// in the contract with address scAddr
 	GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticket, error)
+
+	// TransferTicket transfer a ticket with token id "tokenID" from the owner
+	// "fromAddr" to the new owner "toAddr". This method can be only invoked by
+	// the contract address
+	TransferTicket(scAddr string, tokenID *big.Int, fromAddr string, toAddr string) (string, error)
 }

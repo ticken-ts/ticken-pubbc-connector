@@ -60,3 +60,13 @@ func (cc *Caller) GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticke
 
 	return ticket, err
 }
+
+func (cc *Caller) TransferTicket(scAddr string, tokenID *big.Int, fromAddr string, toAddr string) (string, error) {
+	return cc.submiter.SubmitTx(
+		scAddr,
+		"safeTransferFrom",
+		common.HexToAddress(fromAddr),
+		common.HexToAddress(toAddr),
+		tokenID,
+	)
+}
