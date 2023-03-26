@@ -17,6 +17,12 @@ type Caller struct {
 	nc node.Connector
 }
 
+type EthTicket struct {
+	TokenID   *big.Int
+	Section   string
+	OwnerAddr common.Address
+}
+
 func NewCaller(nc *node.Connector, identity string) (*Caller, error) {
 	if !nc.IsConnected() {
 		return nil, fmt.Errorf("node connector is not connected")
@@ -39,13 +45,18 @@ func (cc *Caller) MintTicket(scAddr string, buyerAddr string, section string, to
 	return cc.submiter.SubmitTx(scAddr, "safeMint", common.HexToAddress(buyerAddr), section, tokenID)
 }
 
-func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]chainmodels.Ticket, error) {
+func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]*chainmodels.Ticket, error) {
 	res, err := cc.querier.Query(scAddr, "getTicketsByOwner", common.HexToAddress(userAddr))
 	if err != nil {
 		return nil, err
 	}
 
-	tickets := *abi.ConvertType(res[0], new([]chainmodels.Ticket)).(*[]chainmodels.Ticket)
+	ethTickets := *abi.ConvertType(res[0], new([]EthTicket)).(*[]EthTicket)
+
+	var tickets = make([]*chainmodels.Ticket, 0)
+	for _, ethTicket := range ethTickets {
+		tickets = append(tickets, ethTicketToTicket(&ethTicket))
+	}
 
 	return tickets, err
 }
@@ -56,9 +67,9 @@ func (cc *Caller) GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticke
 		return nil, err
 	}
 
-	ticket := abi.ConvertType(res[0], new(chainmodels.Ticket)).(*chainmodels.Ticket)
+	ethTicket := abi.ConvertType(res[0], new(EthTicket)).(*EthTicket)
 
-	return ticket, err
+	return ethTicketToTicket(ethTicket), err
 }
 
 func (cc *Caller) TransferTicket(scAddr string, tokenID *big.Int, fromAddr string, toAddr string) (string, error) {
@@ -69,4 +80,12 @@ func (cc *Caller) TransferTicket(scAddr string, tokenID *big.Int, fromAddr strin
 		common.HexToAddress(toAddr),
 		tokenID,
 	)
+}
+
+func ethTicketToTicket(ethTicket *EthTicket) *chainmodels.Ticket {
+	return &chainmodels.Ticket{
+		OwnerAddr: ethTicket.OwnerAddr.Hex(),
+		TokenID:   ethTicket.TokenID,
+		Section:   ethTicket.Section,
+	}
 }
