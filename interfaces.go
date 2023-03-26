@@ -28,7 +28,7 @@ type Caller interface {
 	MintTicket(scAddr string, buyerAddr string, section string, tokenID *big.Int) (string, error)
 
 	// GetTickets returns all tickets owned by the given user
-	GetTickets(scAddr string, userAddr string) ([]chainmodels.Ticket, error)
+	GetTickets(scAddr string, userAddr string) ([]*chainmodels.Ticket, error)
 
 	// GetTicket return the ticket that match the ticket ID that was minted
 	// in the contract with address scAddr
