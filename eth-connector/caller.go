@@ -67,9 +67,9 @@ func (cc *Caller) GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticke
 		return nil, err
 	}
 
-	ethTicket := abi.ConvertType(res[0], new(EthTicket)).(*EthTicket)
+	ethTicket := *abi.ConvertType(res[0], new(EthTicket)).(*EthTicket)
 
-	return ethTicketToTicket(ethTicket), err
+	return ethTicketToTicket(&ethTicket), err
 }
 
 func (cc *Caller) TransferTicket(scAddr string, tokenID *big.Int, fromAddr string, toAddr string) (string, error) {
