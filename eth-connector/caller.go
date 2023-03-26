@@ -56,9 +56,9 @@ func (cc *Caller) GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticke
 		return nil, err
 	}
 
-	ticket := abi.ConvertType(res[0], new(chainmodels.Ticket)).(*chainmodels.Ticket)
+	ticket := abi.ConvertType(res[0], new(chainmodels.Ticket)).(chainmodels.Ticket)
 
-	return ticket, err
+	return &ticket, err
 }
 
 func (cc *Caller) TransferTicket(scAddr string, tokenID *big.Int, fromAddr string, toAddr string) (string, error) {
