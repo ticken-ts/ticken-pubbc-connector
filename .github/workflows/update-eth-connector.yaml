@@ -22,13 +22,14 @@ jobs:
 
       - name: Get Latest Tag
         id: latest_tag
-        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0 || echo 'v.0.0.0')"
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0 || echo 'v0.0.0')"
 
       - name: Create New Tag
         id: tag
         run: |
-          echo ${{ steps.latest_tag.outputs.tag }}
-          echo ${{ steps.latest_tag.outputs.tag }} | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g' | xargs git tag
+          echo ${{ steps.latest_tag.outputs.tag }} | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g'
 
       - name: Push New Tag
-        run: git push origin ${{ steps.tag.outputs.tag }}
+        run: |
+          git tag ${{ steps.tag.outputs.tag }}
+          git push origin ${{ steps.tag.outputs.tag }}
