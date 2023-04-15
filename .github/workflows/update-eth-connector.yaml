@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows"
+      - ".github/workflows/**"
       - "eth-connector/**"
       - "chain-models/**"
 
 jobs:
-  tag:
+  update-tag:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
