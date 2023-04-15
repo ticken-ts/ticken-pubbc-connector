@@ -6,6 +6,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"os"
 	"path"
+	"path/filepath"
+	"runtime"
 )
 
 const metadataBuildFilename string = "../TickenEvent.json"
@@ -18,11 +20,8 @@ type rawEthContractMetadata struct {
 func ReadMetadata() (*bind.MetaData, error) {
 	// get metadata filepath
 	// independent  of where it is called
-	thisFile, err := os.Executable()
-	if err != nil {
-		return nil, fmt.Errorf("failed to load metada: %s", err.Error())
-	}
-	thisFilePath := path.Dir(thisFile)
+	_, thisFile, _, _ := runtime.Caller(0)
+	thisFilePath := filepath.Dir(thisFile)
 
 	fileContent, err := os.ReadFile(path.Join(thisFilePath, metadataBuildFilename))
 	if err != nil {
