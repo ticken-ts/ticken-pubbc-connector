@@ -44,5 +44,8 @@ func ReadMetadata() (*bind.MetaData, error) {
 		stringABIBuffer.Write(abiItemContent)
 	}
 
-	return &bind.MetaData{ABI: stringABIBuffer.String(), Bin: rawMetadata.Bin}, nil
+	return &bind.MetaData{
+		ABI: fmt.Sprintf("[%s]", stringABIBuffer.String()),
+		Bin: rawMetadata.Bin,
+	}, nil
 }
