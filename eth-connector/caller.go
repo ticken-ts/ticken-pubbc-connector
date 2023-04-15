@@ -47,11 +47,11 @@ func NewCaller(nc *node.Connector, identity string) (*Caller, error) {
 }
 
 func (cc *Caller) MintTicket(scAddr string, buyerAddr string, section string, tokenID *big.Int) (string, error) {
-	return cc.submiter.SubmitTx(scAddr, "safeMint", common.HexToAddress(buyerAddr), section, tokenID)
+	return cc.submiter.SubmitTx(scAddr, "mintTicket", common.HexToAddress(buyerAddr), section, tokenID)
 }
 
 func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]*chainmodels.Ticket, error) {
-	res, err := cc.querier.Query(scAddr, "getTicketsByOwner", common.HexToAddress(userAddr))
+	res, err := cc.querier.Query(scAddr, "getTicketsOwnedBy", common.HexToAddress(userAddr))
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]*chainmodels.Tic
 }
 
 func (cc *Caller) GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticket, error) {
-	res, err := cc.querier.Query(scAddr, "getTicket", tokenID)
+	res, err := cc.querier.Query(scAddr, "tickets", tokenID)
 	if err != nil {
 		return nil, err
 	}
