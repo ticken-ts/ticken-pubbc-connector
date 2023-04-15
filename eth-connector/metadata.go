@@ -11,7 +11,7 @@ const metadataBuildFilename string = "TickenEvent.json"
 
 type rawEthContractMetadata struct {
 	ABI string `json:"abi"`
-	Bin string `json:"bin"`
+	Bin string `json:"bytecode"`
 }
 
 func ReadMetadata() (*bind.MetaData, error) {
