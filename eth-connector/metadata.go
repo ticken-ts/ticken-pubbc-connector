@@ -1,6 +1,7 @@
 package eth_connector
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -10,11 +11,11 @@ import (
 	"runtime"
 )
 
-const metadataBuildFilename string = "../TickenEvent.json"
+const metadataBuildFilename string = "TickenEvent.json"
 
 type rawEthContractMetadata struct {
-	ABI string `json:"abi"`
-	Bin string `json:"bytecode"`
+	ABI []interface{} `json:"abi"`
+	Bin string        `json:"bytecode"`
 }
 
 func ReadMetadata() (*bind.MetaData, error) {
@@ -34,5 +35,14 @@ func ReadMetadata() (*bind.MetaData, error) {
 		return nil, fmt.Errorf("failed to load metada: %s", err.Error())
 	}
 
-	return &bind.MetaData{ABI: rawMetadata.ABI, Bin: rawMetadata.Bin}, nil
+	var stringABIBuffer bytes.Buffer
+	for _, abiItem := range rawMetadata.ABI {
+		abiItemContent, err := json.Marshal(abiItem)
+		if err != nil {
+			return nil, fmt.Errorf("failed to load metada: %s", err.Error())
+		}
+		stringABIBuffer.Write(abiItemContent)
+	}
+
+	return &bind.MetaData{ABI: stringABIBuffer.String(), Bin: rawMetadata.Bin}, nil
 }
