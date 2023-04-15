@@ -21,6 +21,7 @@ func ReadMetadata() (*bind.MetaData, error) {
 	}
 
 	var rawMetadata rawEthContractMetadata
+
 	if err := json.Unmarshal(fileContent, &rawMetadata); err != nil {
 		return nil, fmt.Errorf("failed to load metada: %s", err.Error())
 	}
