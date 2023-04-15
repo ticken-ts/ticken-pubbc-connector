@@ -2,6 +2,7 @@ package eth_connector
 
 import (
 	"fmt"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/node"
 	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/scclient"
 	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/wallet"
@@ -11,6 +12,8 @@ type Admin struct {
 	wm      *wallet.Manager
 	scAdmin *scclient.Admin
 	nc      node.Connector
+
+	scMetadata *bind.MetaData
 }
 
 func NewAdmin(nc *node.Connector, identity string) (*Admin, error) {
@@ -23,11 +26,20 @@ func NewAdmin(nc *node.Connector, identity string) (*Admin, error) {
 		return nil, err
 	}
 
-	return &Admin{wm: wallet.NewManager(), scAdmin: scAdmin}, nil
+	scMetadata, err := ReadMetadata()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Admin{
+		wm:         wallet.NewManager(),
+		scAdmin:    scAdmin,
+		scMetadata: scMetadata,
+	}, nil
 }
 
 func (admin *Admin) DeployEventContract() (string, error) {
-	scAddr, _, err := admin.scAdmin.Deploy(scEventMetadata)
+	scAddr, _, err := admin.scAdmin.Deploy(admin.scMetadata)
 	if err != nil {
 		return "", err
 	}

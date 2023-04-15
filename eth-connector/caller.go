@@ -28,12 +28,17 @@ func NewCaller(nc *node.Connector, identity string) (*Caller, error) {
 		return nil, fmt.Errorf("node connector is not connected")
 	}
 
-	submiter, err := scclient.NewSubmiter(nc, identity, scEventMetadata)
+	scMetadata, err := ReadMetadata()
 	if err != nil {
 		return nil, err
 	}
 
-	querier, err := scclient.NewQuerier(nc, scEventMetadata)
+	submiter, err := scclient.NewSubmiter(nc, identity, scMetadata)
+	if err != nil {
+		return nil, err
+	}
+
+	querier, err := scclient.NewQuerier(nc, scMetadata)
 	if err != nil {
 		return nil, err
 	}
