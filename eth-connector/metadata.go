@@ -1,7 +1,6 @@
 package eth_connector
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -9,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 const metadataBuildFilename string = "TickenEvent.json"
@@ -35,17 +35,17 @@ func ReadMetadata() (*bind.MetaData, error) {
 		return nil, fmt.Errorf("failed to load metada: %s", err.Error())
 	}
 
-	var stringABIBuffer bytes.Buffer
+	var stringABIBuffer []string
 	for _, abiItem := range rawMetadata.ABI {
 		abiItemContent, err := json.Marshal(abiItem)
 		if err != nil {
 			return nil, fmt.Errorf("failed to load metada: %s", err.Error())
 		}
-		stringABIBuffer.Write(abiItemContent)
+		stringABIBuffer = append(stringABIBuffer, string(abiItemContent))
 	}
 
 	return &bind.MetaData{
-		ABI: fmt.Sprintf("[%s]", stringABIBuffer.String()),
+		ABI: fmt.Sprintf("[%s]", strings.Join(stringABIBuffer[:], ",")),
 		Bin: rawMetadata.Bin,
 	}, nil
 }
