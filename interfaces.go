@@ -20,8 +20,8 @@ type Admin interface {
 	// wallet address derived
 	CreateWallet() (string, string, error)
 
-	// GetWalletForKey generates the wallet associated to the
-	// private key passed by parameter. This method is idempotent,
+	// GetWalletForKey generates the wallet address associated to
+	// the private key passed by parameter. This method is idempotent,
 	// so, no matter how many times we pass the private key, it will
 	// always return the same wallet address
 	GetWalletForKey(walletPrivKey string) (string, error)
