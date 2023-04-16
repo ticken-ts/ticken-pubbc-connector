@@ -20,7 +20,7 @@ type Caller struct {
 type EthTicket struct {
 	TokenID *big.Int
 	Section string
-	Status  string
+	Status  int
 	Owner   common.Address
 }
 
@@ -89,10 +89,24 @@ func (cc *Caller) TransferTicket(scAddr string, tokenID *big.Int, fromAddr strin
 }
 
 func ethTicketToTicket(ethTicket *EthTicket) *chainmodels.Ticket {
+	var status chainmodels.TicketStatus
+
+	switch ethTicket.Status {
+	case 0:
+		status = chainmodels.TicketStatusIssued
+		break
+	case 1:
+		status = chainmodels.TicketStatusScanned
+		break
+	case 2:
+		status = chainmodels.TicketStatusExpired
+		break
+	}
+
 	return &chainmodels.Ticket{
 		Owner:   ethTicket.Owner.Hex(),
 		TokenID: ethTicket.TokenID,
 		Section: ethTicket.Section,
-		Status:  ethTicket.Status,
+		Status:  status,
 	}
 }
