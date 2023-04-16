@@ -1,9 +1,12 @@
 package chain_models
 
-import "math/big"
+import (
+	"math/big"
+)
 
 type Ticket struct {
-	TokenID   *big.Int
-	Section   string
-	OwnerAddr string
+	TokenID *big.Int
+	Section string
+	Status  string
+	Owner   string
 }
