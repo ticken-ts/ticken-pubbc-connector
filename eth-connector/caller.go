@@ -19,7 +19,7 @@ type Caller struct {
 
 type EthTicket struct {
 	Owner   common.Address
-	Status  int
+	Status  uint8
 	Section string
 	TokenID *big.Int
 }
