@@ -73,7 +73,12 @@ func (cc *Caller) GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticke
 		return nil, err
 	}
 
-	ethTicket := *abi.ConvertType(res, new(EthTicket)).(*EthTicket)
+	ethTicket := EthTicket{
+		Owner:   res[0].(common.Address),
+		Status:  res[1].(uint8),
+		Section: res[2].(string),
+		TokenID: res[3].(*big.Int),
+	}
 
 	return ethTicketToTicket(&ethTicket), err
 }
