@@ -59,3 +59,12 @@ func (admin *Admin) CreateWallet() (string, string, error) {
 
 	return walletPrivKey, walletAddress, nil
 }
+
+func (admin *Admin) GetWalletForKey(walletPrivKey string) (string, error) {
+	walletAddress, err := admin.wm.GetAddressFromPrivateKey(walletPrivKey)
+	if err != nil {
+		return "", err
+	}
+
+	return walletAddress, nil
+}

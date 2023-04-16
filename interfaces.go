@@ -19,6 +19,12 @@ type Admin interface {
 	// public blockchain. It returns the private key and the
 	// wallet address derived
 	CreateWallet() (string, string, error)
+
+	// GetWalletForKey generates the wallet associated to the
+	// private key passed by parameter. This method is idempotent,
+	// so, no matter how many times we pass the private key, it will
+	// always return the same wallet address
+	GetWalletForKey(walletPrivKey string)
 }
 
 type Caller interface {
