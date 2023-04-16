@@ -13,7 +13,8 @@ import (
 type Caller struct {
 	submiter *scclient.Submiter
 	querier  *scclient.Querier
-	nc       node.Connector
+
+	nc node.Connector
 }
 
 type EthTicket struct {
