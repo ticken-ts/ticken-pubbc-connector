@@ -18,10 +18,10 @@ type Caller struct {
 }
 
 type EthTicket struct {
-	TokenID *big.Int
-	Section string
-	Status  int
 	Owner   common.Address
+	Status  int
+	Section string
+	TokenID *big.Int
 }
 
 func NewCaller(nc *node.Connector, identity string) (*Caller, error) {
@@ -73,7 +73,7 @@ func (cc *Caller) GetTicket(scAddr string, tokenID *big.Int) (*chainmodels.Ticke
 		return nil, err
 	}
 
-	ethTicket := *abi.ConvertType(res[0], new(EthTicket)).(*EthTicket)
+	ethTicket := *abi.ConvertType(res, new(EthTicket)).(*EthTicket)
 
 	return ethTicketToTicket(&ethTicket), err
 }
