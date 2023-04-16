@@ -47,7 +47,7 @@ func NewCaller(nc *node.Connector, identity string) (*Caller, error) {
 }
 
 func (cc *Caller) MintTicket(scAddr string, buyerAddr string, section string, tokenID *big.Int) (string, error) {
-	return cc.submiter.SubmitTx(scAddr, "mintTicket", common.HexToAddress(buyerAddr), section, tokenID)
+	return cc.submiter.SubmitTx(scAddr, "mintTicket", common.HexToAddress(buyerAddr), tokenID, section)
 }
 
 func (cc *Caller) GetTickets(scAddr string, userAddr string) ([]*chainmodels.Ticket, error) {
