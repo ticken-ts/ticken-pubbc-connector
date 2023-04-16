@@ -11,7 +11,7 @@ type Manager struct {
 }
 
 func NewManager() *Manager {
-	return &Manager{}
+	return new(Manager)
 }
 
 // GeneratePrivateKey Generate private key
