@@ -1,8 +1,9 @@
 package ticken_pubbc_connector
 
 import (
-	chainmodels "github.com/ticken-ts/ticken-pubbc-connector/chain-models"
 	"math/big"
+
+	chainmodels "github.com/ticken-ts/ticken-pubbc-connector/chain-models"
 )
 
 type NodeConnector interface {
@@ -18,7 +19,7 @@ type Admin interface {
 	// CreateWallet creates a wallet for a new user in the
 	// public blockchain. It returns the private key and the
 	// wallet address derived
-	CreateWallet() (string, string, error)
+	CreateWallet() (string, string, string, error)
 
 	// GetWalletForKey generates the wallet address associated to
 	// the private key passed by parameter. This method is idempotent,
