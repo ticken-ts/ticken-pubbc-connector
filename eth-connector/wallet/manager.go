@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/rand"
 	"encoding/hex"
+
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -15,13 +16,13 @@ func NewManager() *Manager {
 }
 
 // GeneratePrivateKey Generate private key
-func (m *Manager) GeneratePrivateKey() (string, error) {
+func (m *Manager) GenerateKey() (string, string, error) {
 	pk, err := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
-	return hex.EncodeToString(crypto.FromECDSA(pk)), nil
+	return hex.EncodeToString(crypto.FromECDSA(pk)), pk.PublicKey.X.Text(16), nil
 }
 
 // GetAddressFromPrivateKey Get address from private key

@@ -2,6 +2,7 @@ package eth_connector
 
 import (
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/node"
 	"github.com/ticken-ts/ticken-pubbc-connector/eth-connector/scclient"
@@ -43,22 +44,22 @@ func (admin *Admin) DeployEventContract() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	
+
 	return scAddr.String(), nil
 }
 
-func (admin *Admin) CreateWallet() (string, string, error) {
-	walletPrivKey, err := admin.wm.GeneratePrivateKey()
+func (admin *Admin) CreateWallet() (string, string, string, error) {
+	walletPrivKey, walletPubKey, err := admin.wm.GenerateKey()
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
 	walletAddress, err := admin.wm.GetAddressFromPrivateKey(walletPrivKey)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
-	return walletPrivKey, walletAddress, nil
+	return walletPrivKey, walletAddress, walletPubKey, nil
 }
 
 func (admin *Admin) GetWalletForKey(walletPrivKey string) (string, error) {
