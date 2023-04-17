@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - ".github/workflows/**"
-      - "eth-connector/**"
-      - "chain-models/**"
 
 jobs:
   update-tag:
