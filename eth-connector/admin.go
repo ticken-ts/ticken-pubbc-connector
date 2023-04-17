@@ -49,24 +49,39 @@ func (admin *Admin) DeployEventContract() (string, error) {
 }
 
 func (admin *Admin) CreateWallet() (string, string, string, error) {
-	walletPrivKey, walletPubKey, err := admin.wm.GenerateKey()
+	key, err := admin.wm.GenerateKey()
 	if err != nil {
 		return "", "", "", err
 	}
 
-	walletAddress, err := admin.wm.GetAddressFromPrivateKey(walletPrivKey)
+	walletPrivKeyPem, walletPubKeyPem, err := admin.wm.PemEncodeKey(key)
 	if err != nil {
 		return "", "", "", err
 	}
 
-	return walletPrivKey, walletAddress, walletPubKey, nil
+	walletAddress, err := admin.wm.GetAddressFromKey(key)
+	if err != nil {
+		return "", "", "", err
+	}
+
+	return walletPrivKeyPem, walletPubKeyPem, walletAddress, nil
 }
 
-func (admin *Admin) GetWalletForKey(walletPrivKey string) (string, error) {
-	walletAddress, err := admin.wm.GetAddressFromPrivateKey(walletPrivKey)
+func (admin *Admin) GetWalletForKey(walletPrivKeyPem string) (string, string, string, error) {
+	key, err := admin.wm.PemDecodePrivateKey(walletPrivKeyPem)
 	if err != nil {
-		return "", err
+		return "", "", "", err
 	}
 
-	return walletAddress, nil
+	walletPrivKeyPem, walletPubKeyPem, err := admin.wm.PemEncodeKey(key)
+	if err != nil {
+		return "", "", "", err
+	}
+
+	walletAddress, err := admin.wm.GetAddressFromKey(key)
+	if err != nil {
+		return "", "", "", err
+	}
+
+	return walletPrivKeyPem, walletPubKeyPem, walletAddress, nil
 }
