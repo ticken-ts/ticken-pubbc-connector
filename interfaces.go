@@ -25,7 +25,7 @@ type Admin interface {
 	// the private key passed by parameter. This method is idempotent,
 	// so, no matter how many times we pass the private key, it will
 	// always return the same wallet address
-	GetWalletForKey(walletPrivKey string) (string, error)
+	GetWalletForKey(walletPrivKeyPem string) (string, string, string, error)
 }
 
 type Caller interface {
