@@ -52,9 +52,9 @@ func (m *Manager) PemDecodePublicKey(publicKeyString string) (*ecdsa.PublicKey, 
 
 func (m *Manager) PemDecodePrivateKey(privateKeyString string) (*ecdsa.PrivateKey, error) {
 	pemPrivKey, _ := pem.Decode([]byte(privateKeyString))
-	pubKey, err := crypto.ToECDSA(pemPrivKey.Bytes)
+	privKey, err := crypto.ToECDSA(pemPrivKey.Bytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode pem private key: %s", err.Error())
 	}
-	return pubKey, nil
+	return privKey, nil
 }
