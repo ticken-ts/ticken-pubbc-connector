@@ -93,6 +93,10 @@ func (cc *Caller) TransferTicket(scAddr string, tokenID *big.Int, fromAddr strin
 	)
 }
 
+func (cc *Caller) RaiseAnchors(scAddr string) (string, error) {
+	return cc.submiter.SubmitTx(scAddr, "raiseAnchors")
+}
+
 func ethTicketToTicket(ethTicket *EthTicket) *chainmodels.Ticket {
 	var status chainmodels.TicketStatus
 

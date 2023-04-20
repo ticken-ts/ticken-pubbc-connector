@@ -45,4 +45,9 @@ type Caller interface {
 	// "fromAddr" to the new owner "toAddr". This method can be only invoked by
 	// the contract address
 	TransferTicket(scAddr string, tokenID *big.Int, fromAddr string, toAddr string) (string, error)
+
+	// RaiseAnchors "raise the event anchors". This means, that from this moment,
+	// all NFTs becomes available to trade as collectibles (without overprice)
+	// It returns the transaction ID that raise the event anchors
+	RaiseAnchors(scAddr string) (string, error)
 }
