@@ -2,10 +2,10 @@ package wallet
 
 import (
 	"crypto/ecdsa"
-	"crypto/elliptic"
 	"crypto/rand"
 	"encoding/pem"
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -17,9 +17,9 @@ func NewManager() *Manager {
 }
 
 // GenerateKey Generate a key pair of public and private
-// key, using the ECDSA algorithm ver an P256 elliptic curve
+// key, using the ECDSA algorithm ver an S256 elliptic curve
 func (m *Manager) GenerateKey() (*ecdsa.PrivateKey, error) {
-	ecdsaKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	ecdsaKey, err := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
 	if err != nil {
 		return nil, err
 	}
