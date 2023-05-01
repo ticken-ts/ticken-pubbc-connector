@@ -4,14 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"os"
-	"path"
-	"path/filepath"
-	"runtime"
 	"strings"
+	"embed"
 )
 
+
 const metadataBuildFilename string = "TickenEvent.json"
+
+//go:embed TickenEvent.json
+var metadataFile embed.FS
 
 type rawEthContractMetadata struct {
 	ABI []interface{} `json:"abi"`
@@ -19,12 +20,8 @@ type rawEthContractMetadata struct {
 }
 
 func ReadMetadata() (*bind.MetaData, error) {
-	// get metadata filepath
-	// independent  of where it is called
-	_, thisFile, _, _ := runtime.Caller(0)
-	thisFilePath := filepath.Dir(thisFile)
-
-	fileContent, err := os.ReadFile(path.Join(thisFilePath, metadataBuildFilename))
+	// thanks ChatGPT for this =)!
+	fileContent, err := metadataFile.ReadFile(metadataBuildFilename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load metada: %s", err.Error())
 	}
